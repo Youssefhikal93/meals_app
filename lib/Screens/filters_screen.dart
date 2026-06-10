@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:meals_app/Providers/filter_provider.dart';
 
 enum Filter { glutenFree, lactoseFree, vegan, vegetarian }
 
-class FiltersScreen extends StatefulWidget {
-  const FiltersScreen({super.key, required this.currentFilters});
-  final Map<Filter, bool> currentFilters;
-  @override
-  State<FiltersScreen> createState() => _FiltersScreenState();
+class FiltersScreen extends ConsumerStatefulWidget {
+  const FiltersScreen({super.key});
+
+  ConsumerState<FiltersScreen> createState() => _FiltersScreenState();
 }
 
-class _FiltersScreenState extends State<FiltersScreen> {
+class _FiltersScreenState extends ConsumerState<FiltersScreen> {
   bool glutenFreeSetter = false;
   bool lactoseFreeSetter = false;
   bool veganSetter = false;
@@ -17,10 +18,22 @@ class _FiltersScreenState extends State<FiltersScreen> {
 
   @override
   void initState() {
-    glutenFreeSetter = widget.currentFilters[Filter.glutenFree]!;
-    lactoseFreeSetter = widget.currentFilters[Filter.lactoseFree]!;
-    veganSetter = widget.currentFilters[Filter.vegan]!;
-    vegetarianSetter = widget.currentFilters[Filter.vegetarian]!;
+    ref.read(filterProvider).forEach((filter, isActive) {
+      switch (filter) {
+        case Filter.glutenFree:
+          glutenFreeSetter = isActive;
+          break;
+        case Filter.lactoseFree:
+          lactoseFreeSetter = isActive;
+          break;
+        case Filter.vegan:
+          veganSetter = isActive;
+          break;
+        case Filter.vegetarian:
+          vegetarianSetter = isActive;
+          break;
+      }
+    });
     super.initState();
   }
 
@@ -30,12 +43,13 @@ class _FiltersScreenState extends State<FiltersScreen> {
       canPop: false,
       onPopInvokedWithResult: (bool didPop, dynamic result) {
         if (didPop) return;
-        Navigator.of(context).pop({
+        ref.read(filterProvider.notifier).setFilters({
           Filter.glutenFree: glutenFreeSetter,
           Filter.lactoseFree: lactoseFreeSetter,
-          Filter.vegetarian: veganSetter,
-          Filter.vegan: vegetarianSetter,
+          Filter.vegetarian: vegetarianSetter,
+          Filter.vegan: veganSetter,
         });
+        Navigator.of(context).pop();
       },
       child: Scaffold(
         appBar: AppBar(title: Text("Your Filters")),

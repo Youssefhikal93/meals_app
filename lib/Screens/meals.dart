@@ -3,26 +3,17 @@ import 'package:meals_app/Widgets/meal_item.dart';
 import 'package:meals_app/models/meals_model.dart';
 
 class MealsScreen extends StatelessWidget {
-  const MealsScreen({
-    super.key,
-    required this.title,
-    required this.mealsList,
-    required this.onAddingOrRemoveAFavMeals,
-  });
+  const MealsScreen({super.key, required this.title, required this.mealsList});
 
   final String? title;
   final List<MealModel> mealsList;
-  final void Function(MealModel meal) onAddingOrRemoveAFavMeals;
 
   @override
   Widget build(BuildContext context) {
     var content = mealsList.isNotEmpty
         ? ListView.builder(
             itemCount: mealsList.length,
-            itemBuilder: (context, index) => MealItem(
-              meal: mealsList[index],
-              onAddingOrRemoveAFavMeals: onAddingOrRemoveAFavMeals,
-            ),
+            itemBuilder: (context, index) => MealItem(meal: mealsList[index]),
           )
         : Center(
             child: Column(

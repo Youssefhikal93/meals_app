@@ -8,10 +8,8 @@ import 'package:meals_app/models/meals_model.dart';
 class CategoriesScreen extends StatelessWidget {
   const CategoriesScreen({
     super.key,
-    required this.onAddingOrRemoveAFavMeals,
     required this.availableMealsAfterFiltering,
   });
-  final void Function(MealModel meal) onAddingOrRemoveAFavMeals;
   final List<MealModel> availableMealsAfterFiltering;
 
   void _onTappingCategory(BuildContext context, CategoryModel category) {
@@ -22,11 +20,8 @@ class CategoriesScreen extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (ctx) => MealsScreen(
-          mealsList: filteredMeals,
-          title: category.title,
-          onAddingOrRemoveAFavMeals: onAddingOrRemoveAFavMeals,
-        ),
+        builder: (ctx) =>
+            MealsScreen(mealsList: filteredMeals, title: category.title),
       ),
     );
     // Navigator.of(context).push(route) same as push

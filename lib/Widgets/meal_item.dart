@@ -4,12 +4,7 @@ import 'package:meals_app/Widgets/mea_item_trait.dart';
 import 'package:meals_app/models/meals_model.dart';
 
 class MealItem extends StatelessWidget {
-  const MealItem({
-    super.key,
-    required this.meal,
-    required this.onAddingOrRemoveAFavMeals,
-  });
-  final void Function(MealModel meal) onAddingOrRemoveAFavMeals;
+  const MealItem({super.key, required this.meal});
 
   final MealModel meal;
   String get normalizeComplexly =>
@@ -21,12 +16,7 @@ class MealItem extends StatelessWidget {
   void _onTapping(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => MealDetails(
-          meal: meal,
-          onAddingOrRemoveAFavMeals: onAddingOrRemoveAFavMeals,
-        ),
-      ),
+      MaterialPageRoute(builder: (context) => MealDetails(meal: meal)),
     );
   }
 
