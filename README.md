@@ -65,6 +65,7 @@ lib/
 | `main` | Base app using local state management (`setState`) with `StatefulWidget`. Filters and favorites are managed within the widget tree. |
 | `riverPod` | Refactored to use [Riverpod](https://riverpod.dev/) for state management. Favorites and filters are moved into providers (`StateNotifierProvider`, `Provider`), removing prop drilling. |
 | `resposinviness` | Builds on the Riverpod branch with responsive UI improvements. Categories show more columns on wider screens, meals list switches to a grid on tablets, and the bottom navigation bar is replaced with a `NavigationRail` on screens ≥ 600px wide. |
+| `animation` | Builds on the responsiveness branch by adding UI animations. Includes an `AnimatedSwitcher` with a `ScaleTransition` (elastic bounce curve) on the favorite star icon in meal details, giving a springy jump effect when toggling favorites. |
 
 
 - [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
