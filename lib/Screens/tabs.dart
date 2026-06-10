@@ -51,21 +51,50 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
       activePage = MealsScreen(title: null, mealsList: favoritesMeals);
       activePageTitle = "Favorites";
     }
+    final isWide = MediaQuery.of(context).size.width >= 600;
+
     return Scaffold(
       appBar: AppBar(title: Text(activePageTitle)),
       drawer: MainDrawer(onSelectScreen: selectDrawerMenuItem),
-      body: activePage,
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (value) => _selectTab(value),
-        currentIndex: _selectedPageIndex,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.set_meal),
-            label: "Categories",
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.star), label: "Wishlist"),
-        ],
-      ),
+      body: isWide
+          ? Row(
+              children: [
+                NavigationRail(
+                  selectedIndex: _selectedPageIndex,
+                  onDestinationSelected: _selectTab,
+                  labelType: NavigationRailLabelType.all,
+                  destinations: const [
+                    NavigationRailDestination(
+                      icon: Icon(Icons.set_meal),
+                      label: Text("Categories"),
+                    ),
+                    NavigationRailDestination(
+                      icon: Icon(Icons.star),
+                      label: Text("Wishlist"),
+                    ),
+                  ],
+                ),
+                const VerticalDivider(thickness: 1, width: 1),
+                Expanded(child: activePage),
+              ],
+            )
+          : activePage,
+      bottomNavigationBar: isWide
+          ? null
+          : BottomNavigationBar(
+              onTap: (value) => _selectTab(value),
+              currentIndex: _selectedPageIndex,
+              items: [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.set_meal),
+                  label: "Categories",
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.star),
+                  label: "Wishlist",
+                ),
+              ],
+            ),
     );
   }
 }
