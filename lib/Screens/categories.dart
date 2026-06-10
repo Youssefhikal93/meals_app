@@ -3,9 +3,11 @@ import 'package:meals_app/Screens/meals.dart';
 import 'package:meals_app/Widgets/category_grid_item.dart';
 import 'package:meals_app/models/category_model.dart';
 import 'package:meals_app/models/dummay_data.dart';
+import 'package:meals_app/models/meals_model.dart';
 
 class CategoriesScreen extends StatelessWidget {
-  const CategoriesScreen({super.key});
+  const CategoriesScreen({super.key, required this.onAddingOrRemoveAFavMeals});
+  final void Function(MealModel meal) onAddingOrRemoveAFavMeals;
 
   void _onTappingCategory(BuildContext context, CategoryModel category) {
     final filteredMeals = dummyMeals
@@ -15,8 +17,11 @@ class CategoriesScreen extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (ctx) =>
-            MealsScreen(mealsList: filteredMeals, title: category.title),
+        builder: (ctx) => MealsScreen(
+          mealsList: filteredMeals,
+          title: category.title,
+          onAddingOrRemoveAFavMeals: onAddingOrRemoveAFavMeals,
+        ),
       ),
     );
     // Navigator.of(context).push(route) same as push
