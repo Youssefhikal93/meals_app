@@ -58,6 +58,14 @@ lib/
 - Flutter SDK `^3.12.1`
 - Dart SDK `^3.12.1`
 
+## Branches
+
+| Branch | Description |
+|---|---|
+| `main` | Base app using local state management (`setState`) with `StatefulWidget`. Filters and favorites are managed within the widget tree. |
+| `riverPod` | Refactored to use [Riverpod](https://riverpod.dev/) for state management. Favorites and filters are moved into providers (`StateNotifierProvider`, `Provider`), removing prop drilling. |
+| `resposinviness` | Builds on the Riverpod branch with responsive UI improvements. Categories show more columns on wider screens, meals list switches to a grid on tablets, and the bottom navigation bar is replaced with a `NavigationRail` on screens ≥ 600px wide. |
+
 
 - [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
 - [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
