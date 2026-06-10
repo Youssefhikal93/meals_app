@@ -6,11 +6,16 @@ import 'package:meals_app/models/dummay_data.dart';
 import 'package:meals_app/models/meals_model.dart';
 
 class CategoriesScreen extends StatelessWidget {
-  const CategoriesScreen({super.key, required this.onAddingOrRemoveAFavMeals});
+  const CategoriesScreen({
+    super.key,
+    required this.onAddingOrRemoveAFavMeals,
+    required this.availableMealsAfterFiltering,
+  });
   final void Function(MealModel meal) onAddingOrRemoveAFavMeals;
+  final List<MealModel> availableMealsAfterFiltering;
 
   void _onTappingCategory(BuildContext context, CategoryModel category) {
-    final filteredMeals = dummyMeals
+    final filteredMeals = availableMealsAfterFiltering
         .where((meal) => meal.categories.contains(category.id))
         .toList();
 

@@ -3,7 +3,16 @@ import 'package:meals_app/Screens/categories.dart';
 import 'package:meals_app/Screens/filters_screen.dart';
 import 'package:meals_app/Screens/meals.dart';
 import 'package:meals_app/Widgets/main_drawer.dart';
+import 'package:meals_app/models/dummay_data.dart';
 import 'package:meals_app/models/meals_model.dart';
+import 'package:meals_app/Screens/filters_screen.dart';
+
+var kInitialFilters = {
+  Filter.glutenFree: false,
+  Filter.lactoseFree: false,
+  Filter.vegetarian: false,
+  Filter.vegan: false,
+};
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key});
@@ -17,6 +26,7 @@ class TabsScreen extends StatefulWidget {
 class _TabsScreenState extends State<TabsScreen> {
   int _selectedPageIndex = 0;
   final List<MealModel> favoritesMeals = [];
+  Map<Filter, bool> selectedFilters = kInitialFilters;
 
   void _selectTab(int tabIndex) {
     setState(() {
@@ -48,22 +58,45 @@ class _TabsScreenState extends State<TabsScreen> {
     });
   }
 
-  void selectDrawerMenuItem(String identifier) {
+  void selectDrawerMenuItem(String identifier) async {
     Navigator.pop(context); // close the drawer first
     if (identifier == "filters") {
-      Navigator.push(
+      final resultFromFilterPage = await Navigator.push<Map<Filter, bool>>(
         context,
-        MaterialPageRoute(builder: (context) => FiltersScreen()),
+        MaterialPageRoute(
+          builder: (context) => FiltersScreen(currentFilters: selectedFilters),
+        ),
       );
+      setState(() {
+        selectedFilters = resultFromFilterPage ?? kInitialFilters;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    String activePageTitle = "Categories";
+    final availableMealsAfterFiltering = dummyMeals
+        .where(
+          (element) =>
+              (selectedFilters[Filter.glutenFree]!
+                  ? element.isGlutenFree
+                  : true) &&
+              (selectedFilters[Filter.lactoseFree]!
+                  ? element.isLactoseFree
+                  : true) &&
+              (selectedFilters[Filter.vegetarian]!
+                  ? element.isVegetarian
+                  : true) &&
+              (selectedFilters[Filter.vegan]! ? element.isVegan : true),
+        )
+        .toList();
+
     Widget activePage = CategoriesScreen(
       onAddingOrRemoveAFavMeals: addingOrRemoveAFavMeals,
+      availableMealsAfterFiltering: availableMealsAfterFiltering,
     );
-    String activePageTitle = "Categories";
+
     if (_selectedPageIndex == 1) {
       activePage = MealsScreen(
         title: null,
