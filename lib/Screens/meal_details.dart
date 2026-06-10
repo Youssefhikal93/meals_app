@@ -16,9 +16,20 @@ class MealDetails extends ConsumerWidget {
         title: Text(meal.title),
         actions: [
           IconButton(
-            icon: favList.contains(meal)
-                ? Icon(Icons.star_outlined, color: Colors.yellow)
-                : Icon(Icons.star),
+            icon: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (child, animation) {
+                // return RotationTransition(turns: animation, child: child);
+                return RotationTransition(
+                  turns: Tween<double>(begin: 0.71, end: 1).animate(animation),
+                  child: child,
+                );
+              },
+              child: Icon(
+                favList.contains(meal) ? Icons.star : Icons.star_border,
+                key: ValueKey(favList.contains(meal)),
+              ),
+            ),
             onPressed: () {
               var result = ref
                   .read(favoritesProvider.notifier)
@@ -41,11 +52,14 @@ class MealDetails extends ConsumerWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Image.network(
-              meal.imageUrl,
-              width: double.infinity,
-              height: 300,
-              fit: BoxFit.contain,
+            Hero(
+              tag: meal.id,
+              child: Image.network(
+                meal.imageUrl,
+                width: double.infinity,
+                height: 300,
+                fit: BoxFit.contain,
+              ),
             ),
             SizedBox(height: 14),
             Text(
