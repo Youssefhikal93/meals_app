@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meals_app/Screens/meal_details.dart';
 import 'package:meals_app/Widgets/mea_item_trait.dart';
 import 'package:meals_app/models/meals_model.dart';
 
@@ -11,6 +12,14 @@ class MealItem extends StatelessWidget {
   String get normalizeAffordability =>
       meal.affordability.name[0].toUpperCase() +
       meal.affordability.name.substring(1);
+
+  void _onTapping(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MealDetails(meal: meal)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -22,7 +31,7 @@ class MealItem extends StatelessWidget {
           Clip.hardEdge, // enforce the style of the card over teh stack
       elevation: 5,
       child: InkWell(
-        onTap: () {},
+        onTap: () => _onTapping(context),
         child: Stack(
           children: [
             FadeInImage(
